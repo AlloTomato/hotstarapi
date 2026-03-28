@@ -48,6 +48,12 @@ export default {
    //     (match, p1) => `group-title="Hotstar-${p1}"`
  //     );
 
+
+
+      cleanedText = cleanedText.replace(
+  /https:\/\/aqfadtv\.xyz\/clearkey\/results\.php\?keyid=/g,
+  "https://vanamali-productions.vercel.app/api/results.php?keyid="
+);
       // =========================
       // /cookie ROUTE
       // =========================
