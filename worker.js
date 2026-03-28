@@ -43,10 +43,10 @@ export default {
       // =========================
       // MODIFY group-title
       // =========================
-      cleanedText = cleanedText.replace(
-        /group-title="([^"]*)"/g,
-        (match, p1) => `group-title="Hotstar-${p1}"`
-      );
+  //    cleanedText = cleanedText.replace(
+   //     /group-title="([^"]*)"/g,
+   //     (match, p1) => `group-title="Hotstar-${p1}"`
+ //     );
 
       // =========================
       // /cookie ROUTE
