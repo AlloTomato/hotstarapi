@@ -1,0 +1,15 @@
+name = "hotstartapi"
+main = "worker.js"
+compatibility_date = "2026-03-28"
+
+# Enable workers.dev subdomain
+workers_dev = true
+
+# Optional: If you want custom route later
+# routes = [
+#   { pattern = "hotstartapi.yourdomain.com/*", zone_name = "yourdomain.com" }
+# ]
+
+# Optional settings
+[vars]
+SOURCE_URL = "https://netx.streamstar18.workers.dev/hot2"
