@@ -1,9 +1,9 @@
 export default {
-  async fetch(request) {
+  async fetch(request, env) {
     try {
       const url = new URL(request.url);
 
-      const SOURCE_URL = "https://netx.streamstar18.workers.dev/hot2";
+      const SOURCE_URL = env.SOURCE_URL || "https://netx.streamstar18.workers.dev/hot2";
 
       // Fetch playlist
       const response = await fetch(SOURCE_URL, {
@@ -15,7 +15,7 @@ export default {
       let text = await response.text();
 
       // =========================
-      // REMOVE FIRST TELEGRAM BLOCK
+      // REMOVE TELEGRAM BLOCK
       // =========================
       const lines = text.split("\n");
 
@@ -25,13 +25,11 @@ export default {
       for (let i = 0; i < lines.length; i++) {
         let line = lines[i];
 
-        // Detect Telegram promo block
         if (line.includes("Join Telegram")) {
           skipBlock = true;
           continue;
         }
 
-        // Skip next line (image URL)
         if (skipBlock) {
           skipBlock = false;
           continue;
@@ -40,7 +38,15 @@ export default {
         cleaned.push(line);
       }
 
-      const cleanedText = cleaned.join("\n");
+      let cleanedText = cleaned.join("\n");
+
+      // =========================
+      // MODIFY group-title
+      // =========================
+      cleanedText = cleanedText.replace(
+        /group-title="([^"]*)"/g,
+        (match, p1) => `group-title="Hotstar-${p1}"`
+      );
 
       // =========================
       // /cookie ROUTE
@@ -58,7 +64,6 @@ export default {
             extinfCount++;
           }
 
-          // 3rd channel entry
           if (extinfCount === 3 && allLines[i].includes("#EXTHTTP")) {
             const match = allLines[i].match(/"cookie":"([^"]+)"/);
             if (match) {
@@ -80,7 +85,8 @@ export default {
       // =========================
       return new Response(cleanedText, {
         headers: {
-          "Content-Type": "application/vnd.apple.mpegurl"
+          // ✅ This makes it OPEN in browser (not download)
+          "Content-Type": "text/plain; charset=utf-8"
         }
       });
 
